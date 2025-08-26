@@ -56,8 +56,19 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		// 火球伤害效果
 		const UAbilitySystemComponent* SourceAsc =
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Avatar);
+
+		FGameplayEffectContextHandle EffectContextHandle = SourceAsc->MakeEffectContext();
+		EffectContextHandle.SetAbility(this);
+		EffectContextHandle.AddSourceObject(Projectile);
+		TArray<TWeakObjectPtr<AActor>> Actors;
+		Actors.Add(Projectile);
+		EffectContextHandle.AddActors(Actors);
+		FHitResult HitResult;
+		HitResult.Location = ProjectileTargetLocation;
+		EffectContextHandle.AddHitResult(HitResult);
+
 		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(
-			DamageEffectClass, GetAbilityLevel(), SourceAsc->MakeEffectContext());
+			DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
 		// 根据等级获取对应伤害曲线数值
 		const float ScaleDamage = Damage.GetValueAtLevel(GetAbilityLevel());
