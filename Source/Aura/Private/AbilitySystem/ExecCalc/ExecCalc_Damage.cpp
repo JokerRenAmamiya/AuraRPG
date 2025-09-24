@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
@@ -87,6 +88,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bBlocked = FMath::RandRange(0.f, 100.f) < TargetBlockChance;
 	// 判定成功衰减伤害
 	Damage = bBlocked ? Damage / 2.f : 0.f;
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+	// 设置格挡效果
+	UAuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
 
 	// 获取目标护甲值
 	float TargetArmor = GetCapturedAttributeMagnitude(DamageStatics().ArmorDef, ExecutionParams, EvaluateParameters);
@@ -140,7 +144,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bCriticalHit = FMath::RandRange(1.f, 100.f) < EffectiveCriticalHitChance;
 	// Double damage plus a bonus if critical hit.
 	Damage = bCriticalHit ? 2.f * Damage + SourceCriticalHitDamage : Damage;
-
+	// 设置命中效果
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 	// 构造输出数据
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(),
 	                                                   EGameplayModOp::Additive, Damage);

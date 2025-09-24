@@ -287,6 +287,9 @@ private:
 	 * 展示伤害值
 	 * @param Properties 效果属性
 	 * @param Damage 伤害值
+	 * @param bIsBlockedHit 是否格挡
+	 * @param bIsCriticalHit 是否命中
 	 */
-	void ShowFloatingText(const FEffectProperties& Properties, float Damage) const;
+	void ShowFloatingText(const FEffectProperties& Properties, float Damage, bool bIsBlockedHit,
+	                      bool bIsCriticalHit) const;
 };

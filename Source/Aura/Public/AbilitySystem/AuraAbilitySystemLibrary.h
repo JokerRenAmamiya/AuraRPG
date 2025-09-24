@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
 class UOverlayWidgetController;
@@ -63,4 +65,40 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|CharacterClassDefaluts")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
+
+
+	/**
+	 * 获取阻挡命中状态
+	 * @param EffectContextHandle 效果上下文句柄
+	 * @return 是否命中
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	/**
+	 * 获取关键命中状态
+	 * @param EffectContextHandle 效果上下文句柄
+	 * @return 是否命中
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	/**
+	 * 设置格挡命中
+	 * @param EffectContextHandle 效果上下文句柄 输入参数引用
+	 * @param bInIsBlockedHit 是否格挡
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetIsBlockedHit(UPARAM(ref)
+	                            FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
+
+
+	/**
+	 * 设置关键命中
+	 * @param EffectContextHandle 效果上下文句柄 输入参数引用
+	 * @param bInCriticalHit 是否命中
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetIsCriticalHit(UPARAM(ref)
+	                             FGameplayEffectContextHandle& EffectContextHandle, bool bInCriticalHit);
 };
