@@ -18,7 +18,9 @@ public:
 	/**
 	 * 设置伤害漂浮字体数值
 	 * @param Damage 伤害数值
+	 * @param bIsBlockedHit 是否格挡
+	 * @param bIsCriticalHit 是否命中
 	 */
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void SetDamageText(float Damage);
+	void SetDamageText(float Damage, bool bIsBlockedHit, bool bIsCriticalHit);
 };

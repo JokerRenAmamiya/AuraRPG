@@ -198,7 +198,7 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Properties, co
 		{
 			if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(PC))
 			{
-				AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter);
+				AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
 			}
 		}
 	}

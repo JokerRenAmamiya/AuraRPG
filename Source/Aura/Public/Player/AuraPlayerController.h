@@ -30,9 +30,12 @@ public:
 	 * 显示伤害数值 (服务端调用客户端函数)
 	 * @param DamageAmount 伤害值
 	 * @param TargetCharacter 目标角色
+	 * @param bIsBlockedHit 是否格挡
+	 * @param bIsCriticalHit 是否命中
 	 */
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bIsBlockedHit,
+	                      bool bIsCriticalHit);
 
 protected:
 	virtual void BeginPlay() override;

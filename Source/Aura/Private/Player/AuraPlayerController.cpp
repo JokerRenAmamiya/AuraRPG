@@ -34,7 +34,9 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	AutoRun();
 }
 
-void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter,
+                                                            bool bIsBlockedHit,
+                                                            bool bIsCriticalHit)
 {
 	// 检查生命周期
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
@@ -49,7 +51,7 @@ void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAm
 		// 子节点分离
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		// 设置数值
-		DamageText->SetDamageText(DamageAmount);
+		DamageText->SetDamageText(DamageAmount, bIsBlockedHit, bIsCriticalHit);
 	}
 }
 
