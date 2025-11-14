@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
-#include "GameplayAbilitySpecHandle.h"
 #include "AuraProjectile.generated.h"
 
 class UNiagaraSystem;
@@ -48,6 +47,18 @@ protected:
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                     int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	/**
+	 * 被击中后触发
+	 */
+	void OnHit();
+
+	/**
+	 * 是否有效堆叠
+	 * @param OtherActor 对象
+	 * @return 是否有效
+	 */
+	bool IsValidOverlap(AActor* OtherActor);
 
 private:
 	/**

@@ -6,12 +6,12 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
-#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
 #include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+
 
 AAuraProjectile::AAuraProjectile()
 {
@@ -45,29 +45,31 @@ void AAuraProjectile::BeginPlay()
 	// 设置存在时间
 	SetLifeSpan(LeftSpan);
 	SetReplicateMovement(true);
-	// 动态绑定重叠函数
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
+	// 检查火球存在
+	if (IsValid(Sphere))
+	{
+		// 动态绑定重叠函数
+		Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
+	}
 
-	// 生成声音循环组件
-	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	// 生成声音时，检查 SoundBase 是否有效
+	if (IsValid(LoopingSound))
+	{
+		// 生成声音循环组件
+		LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	}
 }
 
 void AAuraProjectile::Destroyed()
 {
-	if (LoopingSoundComponent)
+	if (IsValid(LoopingSoundComponent))
 	{
 		LoopingSoundComponent->Stop();
 		LoopingSoundComponent->DestroyComponent();
 	}
 	if (!bHit && !HasAuthority())
 	{
-		// 获取演员位置(不能用const常量，否则原地爆炸)
-		FVector ActorLocation = GetActorLocation();
-		//UE_LOG(LogTemp, Error, TEXT("ActorLocation: %f"), ActorLocation.X);
-		// 在演员位置播放音效
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, ActorLocation, FRotator::ZeroRotator);
-		// 在演员位置生成粒子特效
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, ActorLocation);
+		OnHit();
 	}
 	Super::Destroyed();
 }
@@ -76,6 +78,12 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActo
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
 {
+	if (!IsValidOverlap(OtherActor))
+		return;
+	if (!bHit)
+	{
+		OnHit();
+	}
 	// 获取演员位置(不能用const常量，否则原地爆炸)
 	FVector ActorLocation = GetActorLocation();
 	//UE_LOG(LogTemp, Error, TEXT("ActorLocation: %f"), ActorLocation.X);
@@ -84,14 +92,17 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	// 在演员位置生成粒子特效
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, ActorLocation);
 
-	// 停止播放声音
-	LoopingSoundComponent->Stop();
 	if (HasAuthority())
 	{
 		// 应用效果
 		if (UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetAsc->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			// 有效性检查
+			if (HasAuthority() && DamageEffectSpecHandle.IsValid())
+			{
+				FGameplayEffectSpec EffectSpec = *DamageEffectSpecHandle.Data.Get();
+				TargetAsc->ApplyGameplayEffectSpecToSelf(EffectSpec);
+			}
 		}
 		Destroy();
 	}
@@ -99,4 +110,29 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	{
 		bHit = true;
 	}
+}
+
+void AAuraProjectile::OnHit()
+{
+	// 获取演员位置(不能用const常量，否则原地爆炸)
+	FVector ActorLocation = GetActorLocation();
+	//UE_LOG(LogTemp, Error, TEXT("ActorLocation: %f"), ActorLocation.X);
+	// 在演员位置播放音效
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, ActorLocation, FRotator::ZeroRotator);
+	// 在演员位置生成粒子特效
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, ActorLocation);
+	// 声音组件
+	if (IsValid(LoopingSoundComponent))
+	{
+		// 停止播放声音
+		LoopingSoundComponent->Stop();
+		// 销毁声音组件
+		LoopingSoundComponent->DestroyComponent();
+	}
+	bHit = true;
+}
+
+bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
+{
+	return true;
 }

@@ -45,20 +45,26 @@ void UTargetDataUnderMouse::SendMouseCursorData() const
 {
 	// 预测窗口
 	FScopedPredictionWindow ScopedPrediction(AbilitySystemComponent.Get());
-
+	if (!AbilitySystemComponent.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("AbilitySystemComponent或Ability为空"));
+		return;
+	}
 	const APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
 	FHitResult CursorHit;
-	PC->GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	PC->GetHitResultUnderCursor(ECC_Target, false, CursorHit);
 
 	// 目标数据句柄
 	FGameplayAbilityTargetDataHandle DataHandle;
 	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
 	// 目标数据赋值
 	Data->HitResult = CursorHit;
+#if ENABLE_DRAW_DEBUG
 	// 打印点击位置
 	UE_LOG(LogTemp, Warning, TEXT("UTargetDataUnderMouse位置: X=%.2f, Y=%.2f, Z=%.2f"),
 	       CursorHit.Location.X, CursorHit.Location.Y, CursorHit.Location.Z);
 	DataHandle.Add(Data);
+# endif
 	// 服务器设置复制的目标数据
 	AbilitySystemComponent->ServerSetReplicatedTargetData(
 		GetAbilitySpecHandle(),
