@@ -189,17 +189,21 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 }
 
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Properties, const float Damage, bool bIsBlockedHit,
-                                         bool bIsCriticalHit) const
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool bBlockedHit,
+                                         bool bCriticalHit) const
 {
-	if (Properties.SourceCharacter != Properties.TargetCharacter)
+	if (!IsValid(Props.SourceAvatarActor) || !IsValid(Props.TargetAvatarActor))
+		return;
+	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
-		if (APlayerController* PC = UGameplayStatics::GetPlayerController(Properties.SourceCharacter, 0))
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 		{
-			if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(PC))
-			{
-				AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
-			}
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
 	}
 }

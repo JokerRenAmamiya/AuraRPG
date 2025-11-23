@@ -85,20 +85,20 @@ public:
 
 	/**
 	 * 设置格挡命中
-	 * @param EffectContextHandle 效果上下文句柄 输入参数引用
+	 * @param EffectContextHandle 效果上下文句柄 UPARAM（引用）输入参数
 	 * @param bInIsBlockedHit 是否格挡
 	 */
-	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsBlockedHit(UPARAM(ref)
 	                            FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
 
 
 	/**
 	 * 设置关键命中
-	 * @param EffectContextHandle 效果上下文句柄 输入参数引用
+	 * @param EffectContextHandle 效果上下文句柄 UPARAM（引用）输入参数
 	 * @param bInCriticalHit 是否命中
 	 */
-	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsCriticalHit(UPARAM(ref)
 	                             FGameplayEffectContextHandle& EffectContextHandle, bool bInCriticalHit);
 };
