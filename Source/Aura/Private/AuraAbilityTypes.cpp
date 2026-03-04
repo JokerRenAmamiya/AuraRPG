@@ -72,7 +72,7 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, class UPackageMap* M
 		{
 			if (!HitResult.IsValid())
 			{
-				HitResult = TSharedPtr<FHitResult>(new FHitResult());
+				HitResult = MakeShared<FHitResult>();
 			}
 		}
 		HitResult->NetSerialize(Ar, Map, bOutSuccess);

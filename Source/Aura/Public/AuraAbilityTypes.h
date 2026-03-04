@@ -15,13 +15,25 @@ public:
 	void SetCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
-	virtual UScriptStruct* GetScriptStruct() const
+	virtual UScriptStruct* GetScriptStruct() const override
 	{
-		return FGameplayEffectContext::StaticStruct();
+		return FAuraGameplayEffectContext::StaticStruct();
+	}
+
+	/** Creates a deep copy of this handle, used before modifying */
+	virtual FAuraGameplayEffectContext* Duplicate() const override
+	{
+		FAuraGameplayEffectContext* NewContext = new FAuraGameplayEffectContext();
+		*NewContext = *this;
+		if (GetHitResult())
+		{
+			NewContext->AddHitResult(*GetHitResult(), true);
+		}
+		return NewContext;
 	}
 
 	/** Custom serialization, subclasses must override this */
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 
 protected:
 	UPROPERTY()
@@ -29,4 +41,14 @@ protected:
 
 	UPROPERTY()
 	bool bIsCriticalHit = false;
+};
+
+template <>
+struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : public TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext>
+{
+	enum
+	{
+		WithNetSerializer = true,
+		WithCopy = true
+	};
 };
