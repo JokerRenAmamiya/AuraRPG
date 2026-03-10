@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
@@ -85,6 +86,14 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	                                                        EvaluateParameters);
 	// 判断格挡概率
 	const bool bBlocked = FMath::RandRange(0.f, 100.f) < TargetBlockChance;
+
+	// 获取游戏效果上下文
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+	FGameplayEffectContext* Context = EffectContextHandle.Get();
+	FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(Context);
+	// 设置格挡状态
+	AuraContext->SetBlockedHit(bBlocked);
+
 	// 判定成功衰减伤害
 	Damage = bBlocked ? Damage / 2.f : 0.f;
 
@@ -98,6 +107,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 	// 获取敌人角色数据
 	const UCharacterClassInfo* EnemyClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(TargetAvatar);
+
 
 	// 根据自身等级获取自身护甲值曲线
 	const FRealCurve* ArmorPenetrationCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(

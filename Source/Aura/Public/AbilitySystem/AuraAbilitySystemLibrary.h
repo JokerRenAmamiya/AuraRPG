@@ -63,4 +63,21 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|CharacterClassDefaluts")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
+
+
+	/**
+	 * 蓝图函数，判断是否格挡
+	 * @param EffectContextHandle 游戏效果上下文
+	 * @return 是否格挡
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	/**
+	 * 蓝图函数，判断是否暴击
+	 * @param EffectContextHandle 游戏效果上下文
+	 * @return 是否暴击
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
 };
