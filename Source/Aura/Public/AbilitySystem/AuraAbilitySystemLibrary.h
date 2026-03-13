@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
 class UOverlayWidgetController;
@@ -66,7 +67,8 @@ public:
 
 
 	/**
-	 * 蓝图函数，判断是否格挡
+	 * 蓝图函数
+	 * 判断是否格挡
 	 * @param EffectContextHandle 游戏效果上下文
 	 * @return 是否格挡
 	 */
@@ -74,10 +76,29 @@ public:
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
 
 	/**
-	 * 蓝图函数，判断是否暴击
+	 * 蓝图函数
+	 * 判断是否暴击
 	 * @param EffectContextHandle 游戏效果上下文
 	 * @return 是否暴击
 	 */
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	/**
+	 * 蓝图函数
+	 * 设置是否格挡
+	 * @param EffectContextHandle 游戏效果上下文
+	 * @param bInIsBlockedHit 是否格挡
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
+
+	/**
+	 * 蓝图函数
+	 * 设置是否暴击
+	 * @param EffectContextHandle 游戏效果上下文
+	 * @param bInIsCritical 是否暴击
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetIsCritical(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCritical);
 };

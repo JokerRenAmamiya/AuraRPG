@@ -89,10 +89,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// 获取游戏效果上下文
 	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
-	FGameplayEffectContext* Context = EffectContextHandle.Get();
-	FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(Context);
-	// 设置格挡状态
-	AuraContext->SetBlockedHit(bBlocked);
+
+	// 设置是否格挡
+	UAuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
+	// FGameplayEffectContext* Context = EffectContextHandle.Get();
+	// FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(Context);
+	// // 设置格挡状态
+	// AuraContext->SetIsBlockedHit(bBlocked);
 
 	// 判定成功衰减伤害
 	Damage = bBlocked ? Damage / 2.f : 0.f;
@@ -148,6 +151,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const float EffectiveCriticalHitChance = SourceCriticalChance - TargetCriticalHitResistance *
 		EffectiveCriticalHitResistanceCoefficient;
 	const bool bCriticalHit = FMath::RandRange(1.f, 100.f) < EffectiveCriticalHitChance;
+
+	// 设置是否暴击
+	UAuraAbilitySystemLibrary::SetIsCritical(EffectContextHandle, bCriticalHit);
+
 	// Double damage plus a bonus if critical hit.
 	Damage = bCriticalHit ? 2.f * Damage + SourceCriticalHitDamage : Damage;
 
