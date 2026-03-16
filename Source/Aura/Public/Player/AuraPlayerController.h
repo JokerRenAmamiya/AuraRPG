@@ -30,9 +30,11 @@ public:
 	 * 显示伤害数值 (服务端调用客户端函数)
 	 * @param DamageAmount 伤害值
 	 * @param TargetCharacter 目标角色
+	 * @param bIsBlockedHit 是否格挡
+	 * @param bIsCriticalHit 是否暴击
 	 */
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bIsBlockedHit, bool bIsCriticalHit);
 
 protected:
 	virtual void BeginPlay() override;
@@ -99,12 +101,19 @@ private:
 	 * 缓存位置
 	 */
 	FVector CachedDestination;
+
 	float FlowTime;
+
 	/**
 	 * 短按持续时间
 	 */
 	float ShortPressThreshold;
+
+	/**
+	 * 是否在自动移动中
+	 */
 	bool bAutoRunning;
+
 	bool bTargeting;
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius;
@@ -115,6 +124,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
 
+	/**
+	 * 自动移动
+	 */
 	void AutoRun();
 
 	/**

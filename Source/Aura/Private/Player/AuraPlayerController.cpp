@@ -34,7 +34,8 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	AutoRun();
 }
 
-void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter,
+                                                            bool bIsBlockedHit, bool bIsCriticalHit)
 {
 	// 检查生命周期
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
@@ -49,26 +50,40 @@ void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAm
 		// 子节点分离
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		// 设置数值
-		DamageText->SetDamageText(DamageAmount);
+		DamageText->SetDamageText(DamageAmount, bIsBlockedHit, bIsCriticalHit);
 	}
 }
 
 void AAuraPlayerController::AutoRun()
 {
+	// 检查是否处于自动运行状态，如果不是则直接返回
 	if (!bAutoRunning)
 		return;
+	// 获取控制器控制的 Pawn
 	if (APawn* ControllerPawn = GetPawn())
 	{
+		// 获取角色当前的世界坐标位置
 		const FVector ActorLocation = ControllerPawn->GetActorLocation();
+		// 在样条曲线上找到距离角色当前位置最近的点
+		// 这个点代表角色在预定路径上的投影位置
 		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(
 			ActorLocation, ESplineCoordinateSpace::World);
+		// 在样条曲线上找到最近点对应的切线方向
+		// 这个方向就是角色应该移动的前进方向
 		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(
 			LocationOnSpline, ESplineCoordinateSpace::World);
+		// 将计算出的方向应用到角色的移动输入上
+		// AddMovementInput 会在后续的 Physics 更新中被处理
 		ControllerPawn->AddMovementInput(Direction);
 
+		// 计算当前位置到目标点的距离
+		// CachedDestination 是之前点击鼠标时缓存的目的地坐标
 		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		// 如果距离小于等于接受半径，认为已到达目的地
+		// AutoRunAcceptanceRadius 是一个容差值，避免要求精确到达某一点
 		if (DistanceToDestination <= AutoRunAcceptanceRadius)
 		{
+			// 关闭自动运行状态，停止移动
 			bAutoRunning = false;
 		}
 	}
