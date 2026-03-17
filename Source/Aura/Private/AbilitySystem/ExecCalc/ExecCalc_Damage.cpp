@@ -79,7 +79,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParameters.TargetTags = TargetTags;
 
 	// Get Damage Set by Caller Magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	float Damage = 0.f;
+	const FAuraGameplayTags& AuraGameplayTags = FAuraGameplayTags::Get();
+	for (const FGameplayTag& DamageTypeTag : AuraGameplayTags.DamageTypes)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag);
+		Damage += DamageTypeValue;
+	}
 
 	// 获取目标格挡概率
 	float TargetBlockChance = GetCapturedAttributeMagnitude(DamageStatics().BlockChanceDef, ExecutionParams,
@@ -92,13 +98,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// 设置是否格挡
 	UAuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
-	// FGameplayEffectContext* Context = EffectContextHandle.Get();
-	// FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(Context);
-	// // 设置格挡状态
-	// AuraContext->SetIsBlockedHit(bBlocked);
 
 	// 判定成功衰减伤害
-	Damage = bBlocked ? Damage / 2.f : 0.f;
+	Damage = bBlocked ? Damage / 2.f : Damage;
 
 	// 获取目标护甲值
 	float TargetArmor = GetCapturedAttributeMagnitude(DamageStatics().ArmorDef, ExecutionParams, EvaluateParameters);

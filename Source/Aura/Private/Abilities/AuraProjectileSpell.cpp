@@ -69,10 +69,15 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 
 		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(
 			DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
-		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-		// 根据等级获取对应伤害曲线数值
-		const float ScaleDamage = Damage.GetValueAtLevel(GetAbilityLevel());
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, ScaleDamage);
+
+		// 遍历所有伤害类型，根据类型触发对应伤害值
+		for (TPair<FGameplayTag, FScalableFloat>& Pair : DamageTypes)
+		{
+			// 根据等级获取对应伤害曲线数值
+			const float ScaleDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaleDamage);
+		}
+
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 		// 完成生成（触发BeginPlay）
 		Projectile->FinishSpawning(SpawnTransform);

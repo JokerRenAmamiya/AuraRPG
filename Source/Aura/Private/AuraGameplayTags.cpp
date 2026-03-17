@@ -88,6 +88,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	//------------------------------------------添加伤害类标签------------------------------------------
 	GameplayTags.Damage = GameplayTagsManager->AddNativeGameplayTag(
 		FName("Damage"), FString("Damage"));
+	GameplayTags.Damage_Fire = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Damage.Fire"), FString("Fire Damage Type"));
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire);
 	//------------------------------------------添加伤害类标签------------------------------------------
 
 	//------------------------------------------添加击中效果标签------------------------------------------

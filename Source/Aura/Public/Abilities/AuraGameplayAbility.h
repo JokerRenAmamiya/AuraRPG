@@ -7,7 +7,7 @@
 #include "AuraGameplayAbility.generated.h"
 
 /**
- * 
+ * 玩法能力
  */
 UCLASS()
 class AURA_API UAuraGameplayAbility : public UGameplayAbility
@@ -17,7 +17,4 @@ class AURA_API UAuraGameplayAbility : public UGameplayAbility
 public:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	FGameplayTag StartupInputTag;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Damage")
-	FScalableFloat Damage;
 };
