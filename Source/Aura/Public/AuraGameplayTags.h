@@ -37,6 +37,13 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 	//---------------------------------次要属性---------------------------------
 
+	//---------------------------------属性抗性---------------------------------
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
+	FGameplayTag Attributes_Resistance_Lightning;
+	//---------------------------------属性抗性---------------------------------
+
 	//---------------------------------HUdMessage---------------------------------
 	FGameplayTag Message_PotionHealth;
 	FGameplayTag Message_PotionMana;
@@ -56,8 +63,12 @@ public:
 	//---------------------------------伤害---------------------------------
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
-	
-	TArray<FGameplayTag> DamageTypes;
+	FGameplayTag Damage_Lightning;
+	FGameplayTag Damage_Arcane;
+	FGameplayTag Damage_Physical;
+
+	// 抵抗伤害类型映射
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	//---------------------------------伤害---------------------------------
 
 	//---------------------------------击中效果---------------------------------

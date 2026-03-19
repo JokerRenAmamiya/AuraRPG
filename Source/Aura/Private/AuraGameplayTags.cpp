@@ -88,10 +88,58 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	//------------------------------------------添加伤害类标签------------------------------------------
 	GameplayTags.Damage = GameplayTagsManager->AddNativeGameplayTag(
 		FName("Damage"), FString("Damage"));
+
 	GameplayTags.Damage_Fire = GameplayTagsManager->AddNativeGameplayTag(
 		FName("Damage.Fire"), FString("Fire Damage Type"));
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire);
+
+	GameplayTags.Damage_Lightning = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Damage.Lightning"), FString("Lightning Damage Type"));
+
+	GameplayTags.Damage_Arcane = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Damage.Arcane"), FString("Arcane Damage Type"));
+
+	GameplayTags.Damage_Physical = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Damage.Physical"), FString("Physical Damage Type"));
+
+	/**
+	 * Damage Types
+	 */
+
 	//------------------------------------------添加伤害类标签------------------------------------------
+
+	//------------------------------------------添加伤害抵抗类标签------------------------------------------
+
+	/**
+	 * Resistances
+	 */
+
+	GameplayTags.Attributes_Resistance_Fire = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Attributes.Resistance.Fire"), FString("Fire Resistance"));
+
+	GameplayTags.Attributes_Resistance_Lightning = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Attributes.Resistance.Lightning"), FString("Lightning Resistance"));
+
+	GameplayTags.Attributes_Resistance_Arcane = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Attributes.Resistance.Arcane"), FString("Arcane Resistance"));
+
+	GameplayTags.Attributes_Resistance_Physical = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Attributes.Resistance.Physical"), FString("Physical Resistance"));
+
+	//------------------------------------------添加伤害抵抗类标签------------------------------------------
+
+
+	//------------------------------------------添加伤害和抵抗类映射标签------------------------------------------
+	/**
+	 * Map of Damage Types to Resistances
+	 */
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning,
+	                                          GameplayTags.Attributes_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
+	GameplayTags.DamageTypesToResistances.
+	             Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
+	//------------------------------------------添加伤害和抵抗类映射标签------------------------------------------
+
 
 	//------------------------------------------添加击中效果标签------------------------------------------
 	GameplayTags.Effects_HitReact = GameplayTagsManager->AddNativeGameplayTag(
