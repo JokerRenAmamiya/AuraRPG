@@ -55,14 +55,29 @@ protected:
 
 	virtual void InitAbilityActorInfo();
 
+	/**
+	 * 默认主要属性
+	 */
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
+	/**
+	 * 默认次要属性
+	 */
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
 
+	/**
+	 * 默认重要属性
+	 */
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+
+	/**
+	 * 默认抵抗属性
+	 */
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> DefaultResistanceAttributes;
 
 	/*
 	 * 对自己应用效果
@@ -70,7 +85,7 @@ protected:
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level) const;
 
 	/*
-	 * 初始化属性
+	 * 初始化属性集合
 	 */
 	virtual void InitializeDefaultAttributes() const;
 
