@@ -75,15 +75,16 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	/**
+	 * 属性集构造函数
+	 */
 	UAuraAttributeSet();
+	
+	/**
+	 * 获取生命周期内复制的属性
+	 * @param OutLifetimeProps 存储属性
+	 */
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-
-	//TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FunctionPointer;
-	//TMap<FGameplayTag, FAttributeSignatrue> TagsToAttributes;
-	//TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagsToAttributes;
-	//FGameplayAttribute(*)()
-	//TStaticFuncPtr<float(int32, float, int32)> RandomFunctionPtr;
-	//static float RandomFunction(int32 Base, float Multiplier, int32 Rating) { return 0.f; }
 
 	/*
 	 * 标签属性Map容器
@@ -276,6 +277,50 @@ public:
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage)
 	// -----------------------------------------Meta Attributes-----------------------------------------
+
+
+	//-----------------------------------------Resistance Attributes-----------------------------------------
+	/**
+	 * 火焰抗性
+	 */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRsp_FireResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, FireResistance)
+
+	/**
+	 * 光抗性
+	 */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRsp_LightResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData LightingResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, LightingResistance)
+
+	/**
+	 * 秘法抗性
+	 */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRsp_ArcaneResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData ArcaneResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArcaneResistance)
+
+	/**
+	 * 物理抗性
+	 */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRsp_PhysicalResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, PhysicalResistance)
+
+
+	UFUNCTION()
+	void OnRsp_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
+
+	UFUNCTION()
+	void OnRsp_LightResistance(const FGameplayAttributeData& OldLightingResistance) const;
+
+	UFUNCTION()
+	void OnRsp_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const;
+
+	UFUNCTION()
+	void OnRsp_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const;
+	//-----------------------------------------Resistance Attributes-----------------------------------------
 
 private:
 	/*
