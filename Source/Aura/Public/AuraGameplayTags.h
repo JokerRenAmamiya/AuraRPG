@@ -41,7 +41,7 @@ public:
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
-	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Lighting;
 	//---------------------------------属性抗性---------------------------------
 
 	//---------------------------------HUdMessage---------------------------------
