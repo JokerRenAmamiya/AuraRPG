@@ -8,6 +8,9 @@
 #include "Components/WidgetComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AI/AuraAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 
@@ -29,6 +32,21 @@ AAuraEnemy::AAuraEnemy()
 	EnemyMesh->MarkRenderStateDirty();
 	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->MarkRenderStateDirty();
+}
+
+void AAuraEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	// 判断权限
+	if (!HasAuthority())
+	{
+		return;
+	}
+	AuraAIController = Cast<AAuraAIController>(NewController);
+	// 初始化
+	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	// 运行行为树
+	AuraAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AAuraEnemy::HighlightActor()
