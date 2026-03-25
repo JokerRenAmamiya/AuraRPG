@@ -37,8 +37,8 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 void AAuraPlayerController::ShowDamageNumber_Implementation(const float DamageAmount, ACharacter* TargetCharacter,
                                                             bool bIsBlockedHit, bool bIsCriticalHit)
 {
-	// 检查生命周期
-	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	// 检查生命周期 判断控制器是否有效
+	if (IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
 	{
 		// 创建伤害组件
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);

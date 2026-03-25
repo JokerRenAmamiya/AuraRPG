@@ -48,8 +48,11 @@ void AAuraProjectile::BeginPlay()
 	// 动态绑定重叠函数
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
 
-	// 生成声音循环组件
-	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	if (LoopingSoundComponent)
+	{
+		// 生成声音循环组件
+		LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	}
 }
 
 void AAuraProjectile::Destroyed()
@@ -76,22 +79,36 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActo
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
 {
-	// 获取演员位置(不能用const常量，否则原地爆炸)
-	FVector ActorLocation = GetActorLocation();
-	//UE_LOG(LogTemp, Error, TEXT("ActorLocation: %f"), ActorLocation.X);
-	// 在演员位置播放音效
-	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, ActorLocation, FRotator::ZeroRotator);
-	// 在演员位置生成粒子特效
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, ActorLocation);
+	const FGameplayEffectSpec* DamageEffectSpec = DamageEffectSpecHandle.Data.Get();
+	// 忽略自己
+	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpec->GetContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
 
-	// 停止播放声音
-	LoopingSoundComponent->Stop();
+	if (!bHit)
+	{
+		// 获取演员位置(不能用const常量，否则原地爆炸)
+		FVector ActorLocation = GetActorLocation();
+		//UE_LOG(LogTemp, Error, TEXT("ActorLocation: %f"), ActorLocation.X);
+		// 在演员位置播放音效
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, ActorLocation, FRotator::ZeroRotator);
+		// 在演员位置生成粒子特效
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, ActorLocation);
+
+		if (LoopingSoundComponent)
+		{
+			// 停止播放声音
+			LoopingSoundComponent->Stop();
+		}
+	}
+
 	if (HasAuthority())
 	{
 		// 应用效果
 		if (UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetAsc->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			TargetAsc->ApplyGameplayEffectSpecToSelf(*DamageEffectSpec);
 		}
 		Destroy();
 	}

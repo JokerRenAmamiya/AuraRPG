@@ -206,12 +206,10 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Properties, co
 {
 	if (Properties.SourceCharacter != Properties.TargetCharacter)
 	{
-		if (APlayerController* PC = UGameplayStatics::GetPlayerController(Properties.SourceCharacter, 0))
+		// 获取玩家控制器
+		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Properties.SourceCharacter->Controller))
 		{
-			if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(PC))
-			{
-				AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
-			}
+			AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
 		}
 	}
 }

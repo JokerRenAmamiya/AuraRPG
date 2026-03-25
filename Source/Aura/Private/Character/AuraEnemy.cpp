@@ -65,7 +65,11 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
-	UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	// 判断多人权限
+	if (HasAuthority())
+	{
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	}
 
 	if (UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
@@ -117,8 +121,11 @@ void AAuraEnemy::InitAbilityActorInfo()
 		AuraAsc->AbilityActorInfoSet();
 	}
 
-	// 初始化默认属性
-	InitializeDefaultAttributes();
+	if (HasAuthority())
+	{
+		// 初始化默认属性
+		InitializeDefaultAttributes();
+	}
 }
 
 void AAuraEnemy::InitializeDefaultAttributes() const

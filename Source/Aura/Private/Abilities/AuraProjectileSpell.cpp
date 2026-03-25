@@ -36,7 +36,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		// 武器槽位置
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotator = (ProjectileTargetLocation - SocketLocation).Rotation();
-		Rotator.Pitch = 0.f;
+		//Rotator.Pitch = 0.f;
 		FTransform SpawnTransform;
 		// 设置位置
 		SpawnTransform.SetLocation(SocketLocation);
