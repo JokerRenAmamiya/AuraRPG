@@ -23,6 +23,14 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent->SetIsReplicated(true);
 	// 设置复制模式
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	// 禁用轴旋转
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	// 采用控制器旋转
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");

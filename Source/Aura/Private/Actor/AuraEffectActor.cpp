@@ -22,6 +22,13 @@ void AAuraEffectActor::BeginPlay()
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
+	// 判断是否为敌人
+	const bool bIsEnemy = TargetActor->ActorHasTag(FName("Enemy"));
+	if (bIsEnemy && !bApplyEffectsToEnemies)
+	{
+		return;
+	}
+
 	// 获取目标GAS组件
 	UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (TargetAsc == nullptr)
@@ -35,17 +42,29 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetAsc->ApplyGameplayEffectSpecToSelf(
 		*EffectSpecHandle.Data.Get());
 
+	const EGameplayEffectDurationType GameplayEffectDurationType = EffectSpecHandle.Data.Get()->Def.Get()->
+		DurationPolicy;
 	// 是否为无限持续效果
-	const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy ==
-		EGameplayEffectDurationType::Infinite;
+	const bool bIsInfinite = GameplayEffectDurationType == EGameplayEffectDurationType::Infinite;
 	if (bIsInfinite && InfiniteEffectRemovePolicy == EEffectRemovePolicy::RemoveOnEndOverlap)
 	{
 		ActiveEffectHandles.Add(ActiveEffectHandle, TargetAsc);
+	}
+
+	if (!bDestroyEffectApplication || !bIsInfinite)
+	{
+		Destroy();
 	}
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 {
+	// 判断是否为敌人
+	const bool bIsEnemy = TargetActor->ActorHasTag(FName("Enemy"));
+	if (bIsEnemy && !bApplyEffectsToEnemies)
+	{
+		return;
+	}
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
@@ -62,6 +81,12 @@ void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 {
+	// 判断是否为敌人
+	const bool bIsEnemy = TargetActor->ActorHasTag(FName("Enemy"));
+	if (bIsEnemy && !bApplyEffectsToEnemies)
+	{
+		return;
+	}
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);

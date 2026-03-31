@@ -59,7 +59,13 @@ protected:
 	 * 删除游戏效果
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
-	bool bDestroyEffectRemoval = false;
+	bool bDestroyEffectApplication = false;
+
+	/**
+	 * 敌人应用效果
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
+	bool bApplyEffectsToEnemies = false;
 
 	/**
 	 * 即时游戏效果(一次，立马生效)
