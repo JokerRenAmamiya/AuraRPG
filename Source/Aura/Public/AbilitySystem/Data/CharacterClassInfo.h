@@ -16,7 +16,9 @@ UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
 	Elementalist,
+	// 近战战士
 	Warrior,
+	// 远程射手
 	Ranger
 };
 

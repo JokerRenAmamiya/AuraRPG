@@ -23,9 +23,9 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 
 public:
 	AAuraEnemy();
-	
+
 	virtual void PossessedBy(AController* NewController) override;
-	
+
 	/* Enemy Interface */
 	/**
 	 * 高亮演员
@@ -61,7 +61,7 @@ public:
 	FOnAttributeChangedSignature OnMaxHealthChange;
 
 	/**
-	 * 集中标签变化
+	 * 击中标签变化 
 	 * @param CallbackTag 回调标签
 	 * @param NewCount 击中次数
 	 */
