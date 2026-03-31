@@ -14,6 +14,7 @@ class AURA_API UBTService_FindNearestPlayer : public UBTService_BlueprintBase
 {
 	GENERATED_BODY()
 
+protected:
 	/**
 	 * 每帧执行行为树节点
 	 * @param OwnerComp 组件拥有者
@@ -21,4 +22,16 @@ class AURA_API UBTService_FindNearestPlayer : public UBTService_BlueprintBase
 	 * @param DeltaSeconds 秒数变化量
 	 */
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+	/**
+	 * 目标黑板选择键
+	 */
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FBlackboardKeySelector TargetToFollowSelector;
+
+	/**
+	 * 距离黑板选择键
+	 */
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FBlackboardKeySelector DistanceToFollowSelector;
 };
