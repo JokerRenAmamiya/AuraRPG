@@ -7,7 +7,8 @@
 #include "BTService_FindNearestPlayer.generated.h"
 
 /**
- * 
+ * 自定义行为树节点
+ * 寻找玩家节点
  */
 UCLASS()
 class AURA_API UBTService_FindNearestPlayer : public UBTService_BlueprintBase

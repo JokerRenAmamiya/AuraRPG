@@ -51,7 +51,7 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 		return;
 	}
 	AuraAIController = Cast<AAuraAIController>(NewController);
-	// 初始化
+	// 初始化行为树节点
 	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	// 运行行为树
 	AuraAIController->RunBehaviorTree(BehaviorTree);
