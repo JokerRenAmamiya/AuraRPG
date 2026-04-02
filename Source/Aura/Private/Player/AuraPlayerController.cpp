@@ -161,8 +161,12 @@ void AAuraPlayerController::AbilityInputReleased(const FGameplayTag InputTag)
 					// 绘制路径点
 					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8.f, FColor::Green, false, 5.f);
 				}
-				CachedDestination = PathPoints[PathPoints.Num() - 1];
-				bAutoRunning = true;
+				// 有缓存的路径点才执行寻路
+				if (NavPath->PathPoints.Num() > 0)
+				{
+					CachedDestination = PathPoints[PathPoints.Num() - 1];
+					bAutoRunning = true;
+				}
 			}
 		}
 		FlowTime = 0.f;
