@@ -49,6 +49,17 @@ public:
 	/* End Combat Interface */
 
 	/**
+	 * 设置战斗目标 重写实现
+	 * @param InCombatTarget 战斗目标
+	 */
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+
+	/**
+	 * 获取战斗目标 重写实现
+	 */
+	AActor* GetCombatTarget_Implementation() const override;
+
+	/**
 	 * 生命值变化广播
 	 */
 	UPROPERTY(BlueprintAssignable)
@@ -81,6 +92,12 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;
+
+	/**
+	 * 战斗目标
+	 */
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 protected:
 	virtual void BeginPlay() override;

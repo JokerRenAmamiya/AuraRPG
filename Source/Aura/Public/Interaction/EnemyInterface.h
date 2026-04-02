@@ -24,4 +24,18 @@ public:
 	virtual void HighlightActor() = 0;
 	// 取消高亮演员 纯虚函数
 	virtual void UnHighlightActor() = 0;
+
+	/**
+	 * 设置战斗目标
+	 * @param InCombatTarget 战斗目标
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetCombatTarget(AActor* InCombatTarget);
+
+	/**
+	 * 获取战斗目标
+	 * @return 战斗目标
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	AActor* GetCombatTarget() const;
 };
