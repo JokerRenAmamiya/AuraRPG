@@ -5,6 +5,7 @@
 
 #include "AuraAbilityTypes.h"
 #include "Game/AuraGameModeBase.h"
+#include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
@@ -57,7 +58,7 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	// 添加到角色源
 	EffectContext.AddSourceObject(AvatarActor);
 	// 默认主要属性
-	auto [PrimaryAttributes] = CharacterClassInfo->GetClassDefaultInfo(
+	auto [PrimaryAttributes,StartupAbilities] = CharacterClassInfo->GetClassDefaultInfo(
 		CharacterClass);
 	const FGameplayEffectSpecHandle PrimaryEffectSpecHandle = Asc->MakeOutgoingSpec(
 		PrimaryAttributes, Level, EffectContext);
@@ -74,16 +75,29 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	Asc->ApplyGameplayEffectSpecToSelf(*VitalEffectSpecHandle.Data.Get());
 }
 
-void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* Asc)
+void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* Asc,
+                                                     ECharacterClass CharacterClass)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
 	if (CharacterClassInfo == nullptr)
 		return;
-	// 赋予敌人能力
-	for (const TSubclassOf<UGameplayAbility> Ability : CharacterClassInfo->Abilities)
+	// 赋予敌人通用集合能力
+	for (const TSubclassOf<UGameplayAbility> Ability : CharacterClassInfo->CommonAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 1);
 		Asc->GiveAbility(AbilitySpec);
+	}
+	// 赋予敌人攻击能力
+	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	for (TSubclassOf<UGameplayAbility> Ability : DefaultInfo.StartupAbilities)
+	{
+		ICombatInterface* CombatInterface = Cast<ICombatInterface>(Asc->GetAvatarActor());
+		if (CombatInterface)
+		{
+			int32 PlayerLevel = CombatInterface->GetPlayerLevel();
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, PlayerLevel);
+			Asc->GiveAbility(AbilitySpec);
+		}
 	}
 }
 

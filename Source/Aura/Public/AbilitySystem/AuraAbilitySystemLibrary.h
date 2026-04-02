@@ -51,11 +51,13 @@ public:
 
 	/**
 	 * 给与启动不同的能力
+	 * @param CharacterClass 角色枚举
 	 * @param WorldContextObject 世界上下文
 	 * @param Asc 能力系统组件
 	 */
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|CharacterClassDefaluts")
-	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* Asc);
+	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* Asc,
+	                                 ECharacterClass CharacterClass);
 
 	/**
 	 * 
