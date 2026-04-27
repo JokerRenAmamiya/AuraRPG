@@ -39,7 +39,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
 	FName WeaponTipSocketName;
 
-	virtual FVector GetCombatSocketLocation() override;
+	/**
+	 * 获取武器套索位置
+	 * @return 套索位置
+	 */
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 
 	/**
 	 * 能力组件

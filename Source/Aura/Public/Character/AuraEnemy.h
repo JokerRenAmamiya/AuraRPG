@@ -57,7 +57,7 @@ public:
 	/**
 	 * 获取战斗目标 重写实现
 	 */
-	AActor* GetCombatTarget_Implementation() const override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 
 	/**
 	 * 生命值变化广播

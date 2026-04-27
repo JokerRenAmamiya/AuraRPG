@@ -20,8 +20,18 @@ class AURA_API ICombatInterface
 	GENERATED_BODY()
 
 public:
+	/**
+	 * 获取玩家等级 [接口实现]
+	 * @return 玩家等级
+	 */
 	virtual int32 GetPlayerLevel();
-	virtual FVector GetCombatSocketLocation();
+
+	/**
+	 * 获取战斗Socket位置 [蓝图实现]
+	 * @return 战斗Socket位置
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector GetCombatSocketLocation();
 
 	/**
 	 * 转向目标方向 [蓝图实现]
