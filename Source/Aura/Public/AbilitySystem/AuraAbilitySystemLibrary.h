@@ -103,4 +103,18 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsCritical(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCritical);
+
+
+	/**
+	 * 
+	 * @param WorldContextObject 世界上下文
+	 * @param OutOverlappingActors 碰撞的演员
+	 * @param ActorsToIgnore 忽略的演员
+	 * @param Radius 半径
+	 * @param SphereOrigin 球原始位置
+	 */
+	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void GetLivePlayerWithInRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors,
+	                                      const TArray<AActor*> ActorsToIgnore, float Radius,
+	                                      const FVector& SphereOrigin);
 };

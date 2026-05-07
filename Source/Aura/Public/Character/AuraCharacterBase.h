@@ -18,14 +18,36 @@ public:
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
-
+	// -----------------------------------Combat Interface-----------------------------------
 	/**
-	 * 获取受击动画蒙太奇
+	 * 获取受击动画蒙太奇 [继承接口的类实现]
 	 * @return 受击动画
 	 */
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 
+	/**
+	 * 死亡函数
+	 */
 	virtual void Die() override;
+
+	/**
+	 * 获取武器套索位置 [继承接口的类实现]
+	 * @return 套索位置
+	 */
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+
+	/**
+	 * 是否死亡 [继承接口的类实现]
+	 * @return 死亡标志位
+	 */
+	virtual bool IsDead_Implementation() const override;
+
+	/**
+	 * 获取角色头像 [继承接口的类实现]
+	 * @return 角色头像
+	 */
+	virtual AActor* GetAvatar_Implementation() override;
+	// -----------------------------------Combat Interface-----------------------------------
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -40,10 +62,9 @@ protected:
 	FName WeaponTipSocketName;
 
 	/**
-	 * 获取武器套索位置
-	 * @return 套索位置
+	 * 死亡标志位
 	 */
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	bool bDead = false;
 
 	/**
 	 * 能力组件

@@ -51,4 +51,18 @@ public:
 	 * 死亡纯虚(抽象)函数
 	 */
 	virtual void Die() = 0;
+
+	/**
+	 * 是否死亡
+	 * @return 死亡标志位
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsDead() const;
+
+	/**
+	 * 获取演员头像
+	 * @return 演员头像
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* GetAvatar();
 };
