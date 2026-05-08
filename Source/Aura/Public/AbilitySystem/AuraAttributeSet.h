@@ -42,6 +42,9 @@ struct FEffectProperties
 	UPROPERTY()
 	AController* SourceController = nullptr;
 
+	/**
+	 * 源角色（玩家）
+	 */
 	UPROPERTY()
 	ACharacter* SourceCharacter = nullptr;
 
@@ -54,6 +57,9 @@ struct FEffectProperties
 	UPROPERTY()
 	AController* TargetController = nullptr;
 
+	/**
+	 * 目标角色（敌人）
+	 */
 	UPROPERTY()
 	ACharacter* TargetCharacter = nullptr;
 };
@@ -79,7 +85,7 @@ public:
 	 * 属性集构造函数
 	 */
 	UAuraAttributeSet();
-	
+
 	/**
 	 * 获取生命周期内复制的属性
 	 * @param OutLifetimeProps 存储属性

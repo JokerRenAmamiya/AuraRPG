@@ -209,6 +209,14 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Properties, co
 		// 获取玩家控制器
 		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Properties.SourceCharacter->Controller))
 		{
+			// 玩家给敌人造成伤害数字显示
+			AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
+			return;
+		}
+		// 获取敌人控制器
+		if (AAuraPlayerController* AuraPC = Cast<AAuraPlayerController>(Properties.TargetCharacter->Controller))
+		{
+			// 敌人给玩家造成伤害数字显示
 			AuraPC->ShowDamageNumber(Damage, Properties.TargetCharacter, bIsBlockedHit, bIsCriticalHit);
 		}
 	}
