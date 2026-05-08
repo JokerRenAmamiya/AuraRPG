@@ -28,6 +28,13 @@ public:
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
 
+	/**
+	 * 初始化玩家界面
+	 * @param PC 玩家控制器
+	 * @param PS 玩家状态
+	 * @param ASC 能力组件
+	 * @param AS 能力标签组
+	 */
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC,
 	                 UAttributeSet* AS);
 
