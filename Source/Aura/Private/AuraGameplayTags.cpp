@@ -156,4 +156,17 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Attack = GameplayTagsManager->AddNativeGameplayTag(
 		FName("Abilities.Attack"), FString("Attack Ability Tag"));
 	//------------------------------------------攻击能力标签------------------------------------------
+
+
+	//---------------------------------动画表现---------------------------------
+	/**
+	 * Montage
+	 */
+	GameplayTags.Montage_Attack_Weapon = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Montage.Attack.Weapon"), FString("Tag for Weapon Attack Montage"));
+	GameplayTags.Montage_Attack_LeftHand = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Montage.Attack.LeftHand"), FString("Tag for LeftHand Attack Montage"));
+	GameplayTags.Montage_Attack_RightHand = GameplayTagsManager->AddNativeGameplayTag(
+		FName("Montage.Attack.RightHand"), FString("Tag for RightHand Attack Montage"));
+	//---------------------------------动画表现---------------------------------
 }

@@ -87,6 +87,11 @@ public:
 	FGameplayTag Effects_HitReact;
 	//---------------------------------击中效果---------------------------------
 
+	//---------------------------------动画表现---------------------------------
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_LeftHand;
+	FGameplayTag Montage_Attack_RightHand;
+	//---------------------------------动画表现---------------------------------
 
 protected:
 private:

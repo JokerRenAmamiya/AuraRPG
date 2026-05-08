@@ -47,10 +47,22 @@ public:
 	 * @return 角色头像
 	 */
 	virtual AActor* GetAvatar_Implementation() override;
+
+	/**
+	 * 获取攻击蒙太奇 [继承接口的类实现]
+	 * @return 攻击蒙太奇数组
+	 */
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	// -----------------------------------Combat Interface-----------------------------------
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
+
+	/**
+	 * 攻击蒙太奇数组
+	 */
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TArray<FTaggedMontage> AttackMontages;
 
 protected:
 	virtual void BeginPlay() override;

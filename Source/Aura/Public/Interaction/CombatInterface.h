@@ -3,8 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
+
+/**
+ * 攻击标签蒙太奇结构体
+ */
+USTRUCT(BlueprintType)
+struct FTaggedMontage
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UAnimMontage> Montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag MontageTag;
+};
 
 UINTERFACE(MinimalAPI, BlueprintType)
 class UCombatInterface : public UInterface
@@ -13,7 +29,7 @@ class UCombatInterface : public UInterface
 };
 
 /**
- * 
+ * 战斗接口
  */
 class AURA_API ICombatInterface
 {
@@ -27,7 +43,7 @@ public:
 	virtual int32 GetPlayerLevel();
 
 	/**
-	 * 获取战斗Socket位置 [蓝图实现]
+	 * 获取战斗Socket位置 [默认蓝图实现，如果C++和蓝图都实现优先蓝图]
 	 * @return 战斗Socket位置
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -41,7 +57,7 @@ public:
 	void UpdateFacingTarget(const FVector& Target);
 
 	/**
-	 * 获取受击动画蒙太奇 [继承接口的类实现]
+	 * 获取受击动画蒙太奇 [默认蓝图实现，如果C++和蓝图都实现优先蓝图]
 	 * @return 受击动画
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -53,16 +69,22 @@ public:
 	virtual void Die() = 0;
 
 	/**
-	 * 是否死亡
+	 * 是否死亡 [默认蓝图实现，如果C++和蓝图都实现优先蓝图]
 	 * @return 死亡标志位
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDead() const;
 
 	/**
-	 * 获取演员头像
+	 * 获取演员头像 [默认蓝图实现，如果C++和蓝图都实现优先蓝图]
 	 * @return 演员头像
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AActor* GetAvatar();
+
+	/**
+	 * 攻击蒙太奇数组 [默认蓝图实现，如果C++和蓝图都实现优先蓝图]
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	TArray<FTaggedMontage> GetAttackMontages();
 };
