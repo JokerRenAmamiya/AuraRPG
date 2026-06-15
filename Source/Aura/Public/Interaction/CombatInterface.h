@@ -47,7 +47,7 @@ public:
 	 * @return 战斗Socket位置
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FVector GetCombatSocketLocation();
+	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
 
 	/**
 	 * 转向目标方向 [蓝图实现]

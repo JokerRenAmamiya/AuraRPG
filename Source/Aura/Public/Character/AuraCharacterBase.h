@@ -34,7 +34,7 @@ public:
 	 * 获取武器套索位置 [继承接口的类实现]
 	 * @return 套索位置
 	 */
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 
 	/**
 	 * 是否死亡 [继承接口的类实现]
@@ -72,6 +72,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
 	FName WeaponTipSocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
+	FName LeftHandSocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
+	FName RightHandSocketName;
 
 	/**
 	 * 死亡标志位
