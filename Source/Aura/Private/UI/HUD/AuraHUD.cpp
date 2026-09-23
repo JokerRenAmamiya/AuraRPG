@@ -32,7 +32,7 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
                            UAttributeSet* AS)
 {
 	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized in AuraHUD,please fill out BP_AuraHUD"));
-	checkf(OverlayWidgetController,
+	checkf(OverlayWidgetControllerClass,
 	       TEXT("Overlay Widget Controller uninitialized in AuraHUD,please fill out BP_AuraHUD"));
 
 	// 初始化玩家界面UI
