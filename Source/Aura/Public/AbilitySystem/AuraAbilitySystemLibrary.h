@@ -14,7 +14,7 @@ class UOverlayWidgetController;
 
 
 /**
- * 
+ * 静态能力函数库
  */
 UCLASS()
 class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
@@ -117,4 +117,13 @@ public:
 	static void GetLivePlayerWithInRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors,
 	                                      const TArray<AActor*> ActorsToIgnore, float Radius,
 	                                      const FVector& SphereOrigin);
+
+	/**
+	 * 判断两个演员是否不是朋友
+	 * @param FirstActor 第一个演员
+	 * @param SecondActor 第二个演员
+	 * @return 是否不是朋友
+	 */
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 };
