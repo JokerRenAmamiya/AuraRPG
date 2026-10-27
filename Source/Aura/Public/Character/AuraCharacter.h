@@ -23,6 +23,6 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	/* End Combat Interface */
 
-private:
+protected:
 	virtual void InitAbilityActorInfo() override;
 };

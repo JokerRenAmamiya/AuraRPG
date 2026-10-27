@@ -73,3 +73,24 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+.planning
+
+# InterfaceAuraDll build output
+InterfaceAuraDll/Debug/
+InterfaceAuraDll/Release/
+InterfaceAuraDll/x64/
+InterfaceAuraDll/InterfaceAuraDll/
+*.pdb
+*.ilk
+*.idb
+*.iobj
+*.ipdb
+*.tlog
+*.recipe
+*.exp
+*.lastbuildstate
+
+# ThirdParty 的对外头与二进制需要入库：否则新 clone 直接链接失败。
+# 上面的 *.dll / *.lib 规则会屏蔽它们，这里显式取反。
+!Source/Aura/ThirdParty/*.dll
+!Source/Aura/ThirdParty/*.lib

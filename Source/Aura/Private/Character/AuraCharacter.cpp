@@ -8,6 +8,7 @@
 #include "Player/AuraPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+
 AAuraCharacter::AAuraCharacter()
 {
 	if (UCharacterMovementComponent* Movement = GetCharacterMovement())
